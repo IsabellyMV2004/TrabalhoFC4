@@ -120,17 +120,19 @@ public class PlanilhaActivity extends AppCompatActivity {
             parcelaList.add(p);
         }
 
+        // Inflar e adicionar footer ANTES do setAdapter
+        if (listView.getFooterViewsCount() == 0) { // evita duplicar
+            View footer = getLayoutInflater().inflate(R.layout.rodape_layout, listView, false);
+            TextView tvTotalJuros = footer.findViewById(R.id.tvTotalJuros);
+            tvTotalJuros.setText("Total de Juros Pago: R$ " + String.format("%.2f", totalJuros));
+            listView.addFooterView(footer);
+        }
+
+        // Agora seta o adapter
         ParcelaAdapter parcelaAdapter = new ParcelaAdapter(this,
                 R.layout.item_layout, parcelaList);
         listView.setAdapter(parcelaAdapter);
-
-        // Inflar e adicionar footer (apenas 1 vez)
-        View footer = getLayoutInflater().inflate(R.layout.rodape_layout, listView, false);
-        TextView tvTotalJuros = footer.findViewById(R.id.tvTotalJuros);
-        tvTotalJuros.setText("Total de Juros Pago: R$ " + String.format("%.2f", totalJuros));
-        if (listView.getFooterViewsCount() == 0) { // evita duplicar
-            listView.addFooterView(footer);
-        }
     }
+
 
 }

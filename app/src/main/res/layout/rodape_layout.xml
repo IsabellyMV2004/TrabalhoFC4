@@ -7,4 +7,5 @@
     android:text="Total de Juros: R$ 0,00"
     android:textSize="18sp"
     android:textStyle="bold"
-    android:gravity="center"/>
+    android:gravity="center"
+    android:background="#E0E0E0"/>
