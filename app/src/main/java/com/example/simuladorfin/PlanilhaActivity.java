@@ -93,7 +93,7 @@ public class PlanilhaActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void gerarPlanilhaPrice() {
+    /*private void gerarPlanilhaPrice() {
         List<Parcela> parcelaList=new ArrayList<>();
         double jurosParcela, saldoDevedor=valor;
         for(int i=1; i<=prazo; i++){
@@ -105,5 +105,32 @@ public class PlanilhaActivity extends AppCompatActivity {
         ParcelaAdapter parcelaAdapter=new ParcelaAdapter(this,
                 R.layout.item_layout, parcelaList);
         listView.setAdapter(parcelaAdapter);
+    }*/
+
+    private void gerarPlanilhaPrice() {
+        List<Parcela> parcelaList = new ArrayList<>();
+        double jurosParcela, saldoDevedor = valor;
+        double totalJuros = 0;
+
+        for (int i = 1; i <= prazo; i++) {
+            jurosParcela = saldoDevedor * juros / 100;
+            saldoDevedor -= parcela - jurosParcela;
+            totalJuros += jurosParcela; // acumula os juros
+            Parcela p = new Parcela(i, parcela, jurosParcela, parcela - jurosParcela, saldoDevedor);
+            parcelaList.add(p);
+        }
+
+        ParcelaAdapter parcelaAdapter = new ParcelaAdapter(this,
+                R.layout.item_layout, parcelaList);
+        listView.setAdapter(parcelaAdapter);
+
+        // Inflar e adicionar footer (apenas 1 vez)
+        View footer = getLayoutInflater().inflate(R.layout.rodape_layout, listView, false);
+        TextView tvTotalJuros = footer.findViewById(R.id.tvTotalJuros);
+        tvTotalJuros.setText("Total de Juros Pago: R$ " + String.format("%.2f", totalJuros));
+        if (listView.getFooterViewsCount() == 0) { // evita duplicar
+            listView.addFooterView(footer);
+        }
     }
+
 }
