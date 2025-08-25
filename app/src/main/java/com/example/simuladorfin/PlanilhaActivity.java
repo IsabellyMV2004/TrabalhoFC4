@@ -86,20 +86,40 @@ public class PlanilhaActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if (item.getItemId()== R.id.it_sacre)
-                Toast.makeText(this,"Acessou a opção SACRE",Toast.LENGTH_LONG).show();
-        if (item.getItemId()== R.id.it_price)
-            Toast.makeText(this,"Acessou a opção PRICE",Toast.LENGTH_LONG).show();
+        if (item.getItemId()== R.id.it_sacre) {
+            Toast.makeText(this, "Acessou a opção SACRE", Toast.LENGTH_LONG).show();
+            gerarPlanilhaSacre();
+        }
+        if (item.getItemId()== R.id.it_price) {
+            Toast.makeText(this, "Acessou a opção PRICE", Toast.LENGTH_LONG).show();
+            gerarPlanilhaPrice();
+        }
         return super.onOptionsItemSelected(item);
     }
 
     private void gerarPlanilhaPrice() {
         List<Parcela> parcelaList=new ArrayList<>();
         double jurosParcela, saldoDevedor=valor;
+        parcela = Price.calcParcela(valor, juros, prazo);
         for(int i=1; i<=prazo; i++){
             jurosParcela=saldoDevedor*juros/100;
             saldoDevedor-=parcela-jurosParcela;
             Parcela p = new Parcela(i,parcela,jurosParcela,parcela-jurosParcela,saldoDevedor);
+            parcelaList.add(p);
+        }
+        ParcelaAdapter parcelaAdapter=new ParcelaAdapter(this,
+                R.layout.item_layout, parcelaList);
+        listView.setAdapter(parcelaAdapter);
+    }
+
+    private void gerarPlanilhaSacre(){
+        List<Parcela> parcelaList = new ArrayList<>();
+        double jurosParcela, saldoDevedor = valor;
+        for(int i=1;i<=prazo;i++){
+            parcela = Sacre.calcParcela(valor, juros, prazo, i);
+            jurosParcela = saldoDevedor * juros/100; // ou juros/100 se for percentual
+            saldoDevedor -= (parcela-jurosParcela);
+            Parcela p = new Parcela(i, parcela, jurosParcela, parcela-jurosParcela, saldoDevedor);
             parcelaList.add(p);
         }
         ParcelaAdapter parcelaAdapter=new ParcelaAdapter(this,
