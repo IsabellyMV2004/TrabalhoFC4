@@ -59,16 +59,11 @@ public class PlanilhaActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Parcela parcela1=(Parcela)adapterView.getItemAtPosition(i);
-//                Toast.makeText(PlanilhaActivity.this,"Valor dos juros: R$ "+
-//                        String.format("%.2f",parcela1.getJuros())+
-//                        " Valor a deduzir R$ "+
-//                        String.format("%.2f",parcela1.getAmort()),Toast.LENGTH_LONG)
-//                        .show();
                 Snackbar snackbar;
                 snackbar=Snackbar.make(view,"Valor dos juros: R$ "+
-                        String.format("%.2f",parcela1.getJuros())+
-                        " Valor a deduzir R$ "+
-                        String.format("%.2f",parcela1.getAmort()),
+                                String.format("%.2f",parcela1.getJuros())+
+                                " Valor a deduzir R$ "+
+                                String.format("%.2f",parcela1.getAmort()),
                         Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
@@ -98,17 +93,35 @@ public class PlanilhaActivity extends AppCompatActivity {
     }
 
     private void gerarPlanilhaPrice() {
-        List<Parcela> parcelaList=new ArrayList<>();
-        double jurosParcela, saldoDevedor=valor;
-        parcela = Price.calcParcela(valor, juros, prazo);
-        for(int i=1; i<=prazo; i++){
-            jurosParcela=saldoDevedor*juros/100;
-            saldoDevedor-=parcela-jurosParcela;
-            Parcela p = new Parcela(i,parcela,jurosParcela,parcela-jurosParcela,saldoDevedor);
-            parcelaList.add(p);
+        // Monta a lista de parcelas e calcula o total de juros
+        List<Parcela> parcelaList = new ArrayList<>();
+        double saldoDevedor = valor, totalJuros = 0.0, jurosParcela, amortizacao;
+        View rodape;
+        TextView tvTotalJuros;
+        parcela=Price.calcParcela(valor,juros,prazo);
+        for (int i = 1; i <= prazo; i++) {
+            jurosParcela = saldoDevedor * (juros / 100.0);
+            amortizacao = parcela - jurosParcela;
+            saldoDevedor -= amortizacao;
+
+            // Evita resíduo negativo no último item
+            if (i == prazo && Math.abs(saldoDevedor) < 0.01)
+                saldoDevedor = 0.0;
+
+            totalJuros += jurosParcela;
+            parcelaList.add(new Parcela(i, parcela, jurosParcela, amortizacao, saldoDevedor));
         }
-        ParcelaAdapter parcelaAdapter=new ParcelaAdapter(this,
-                R.layout.item_layout, parcelaList);
+
+        if (listView.getFooterViewsCount() == 0) {
+            rodape = getLayoutInflater().inflate(R.layout.rodape_layout, listView, false);
+            listView.addFooterView(rodape);
+        }
+        // Atualiza o texto do footer
+        tvTotalJuros = listView.findViewById(R.id.tvTotalJuros);
+        if (tvTotalJuros != null)
+            tvTotalJuros.setText("Total de Juros Pago: R$ " + String.format("%.2f", totalJuros));
+
+        ParcelaAdapter parcelaAdapter = new ParcelaAdapter(this, R.layout.item_layout, parcelaList);
         listView.setAdapter(parcelaAdapter);
     }
 
@@ -126,4 +139,6 @@ public class PlanilhaActivity extends AppCompatActivity {
                 R.layout.item_layout, parcelaList);
         listView.setAdapter(parcelaAdapter);
     }
+
+
 }
