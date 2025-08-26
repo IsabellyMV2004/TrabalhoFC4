@@ -1,0 +1,7 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="#BBE2F8"/> <!-- Cor de fundo -->
+    <corners android:radius="16dp"/> <!-- Raio do arredondamento (ex: 16dp) -->
+
+</shape>

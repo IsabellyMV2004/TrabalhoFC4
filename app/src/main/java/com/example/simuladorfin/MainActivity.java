@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText etValor;
     private SeekBar sbPrazo, sbJuros;
     private TextView tvPrazo, tvJuros, tvParcela;
+    private Button btParcela;
 
     private double parcela=0,valor,juros;
     private int prazo;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         tvPrazo=findViewById(R.id.tvPrazo);
         tvJuros=findViewById(R.id.tvJuros);
         tvParcela=findViewById(R.id.tvParcela);
+        btParcela=findViewById(R.id.btParcela);
         //recuperando os parâmetros do empréstimo armazenados na última utilização do app
         SharedPreferences sharedPreferences=getSharedPreferences("config",MODE_PRIVATE);
         valor=sharedPreferences.getFloat("valor",5000);
@@ -94,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        tvParcela.setOnClickListener(e->{trocarActivity();});
+        //tvParcela.setOnClickListener(e->{trocarActivity();});
+        btParcela.setOnClickListener(e->{trocarActivity();});
     }
 
     @Override

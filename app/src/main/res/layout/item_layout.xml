@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:background="#FCE4EC">
+    android:background="#DCE9F8">
 
     <TextView
         android:id="@+id/tvNumero"
@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:text="1"
         android:textAlignment="center"
+        android:textColor="#000000"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
