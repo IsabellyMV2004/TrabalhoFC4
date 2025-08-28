@@ -3,9 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/it_home"
+        android:title="HOME" />
+    <item
         android:id="@+id/it_price"
-        android:title="método PRICE" />
+        android:title="Método PRICE" />
     <item
         android:id="@+id/it_sacre"
-        android:title="método SACRE" />
+        android:title="Método SACRE" />
 </menu>

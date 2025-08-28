@@ -1,5 +1,7 @@
 package com.example.simuladorfin;
 
+import android.content.ClipData;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -89,7 +91,19 @@ public class PlanilhaActivity extends AppCompatActivity {
             Toast.makeText(this, "Acessou a opção PRICE", Toast.LENGTH_LONG).show();
             gerarPlanilhaPrice();
         }
+        if(item.getItemId()==R.id.it_home){
+            Toast.makeText(this, "Indo para página principal", Toast.LENGTH_LONG).show();
+            voltarPaginaInicial();
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void voltarPaginaInicial(){
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("valor",valor);
+        intent.putExtra("juros",juros);
+        intent.putExtra("prazo",prazo);
+        startActivity(intent);
     }
 
     private void gerarPlanilhaPrice() {
